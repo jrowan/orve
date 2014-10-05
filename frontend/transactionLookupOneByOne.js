@@ -68,34 +68,4 @@ exports.getJSON = function(accessToken, pendingTransactions)
 	
 	}
 
-}; 
-	
-	
-	
-    //console.log("rest::getJSON");
-
-	//actually perform the request
-    var req = https.request(options, function(res)
-    {
-        var output = '';
-        console.log(options.host + ':' + res.statusCode);
-        res.setEncoding('utf8');
-
-        res.on('data', function (chunk) {
-            output += chunk;
-        });
-
-        res.on('end', function() {
-            var current = JSON.parse(output);
-			//here we do what we were planning to do to begin with: compare to the database lookup of previous results
-			for(
-			
-        });
-    });
-
-    req.on('error', function(err) {
-        //res.send('error: ' + err.message);
-    });
-
-    req.end();
 };
