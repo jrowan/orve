@@ -2,14 +2,14 @@ var http = require("http");
 var https = require("https");
 
 /**
+ * looks up all transactions and compares to what we already have
  * getJSON:  REST get request returning JSON object(s)
- * @param accessToken: a valid access token
- * @param lastRequestTime: a UTC Date that indicates the last time we checked for stuff
- * @param amou
+ * @param accessToken a valid access token
+ * @param previousTransactions a json containing the result of a database lookup of previous transactions
  */
 
 
-exports.getJSON = function(accessToken, lastRequestTime)
+exports.getJSON = function(accessToken, previousTransactions)
 {
 	//developed with the help of looking at Bryan Mac's answer on stackexchange here:
 	//http://stackoverflow.com/questions/9577611/http-get-request-in-node-js-express
@@ -27,7 +27,6 @@ exports.getJSON = function(accessToken, lastRequestTime)
 	//this is the string of arguments we'll pass to the api GET request
 	var get_data = querystring.stringify({
 		'access_token' : String(accessToken),
-        'after': String(lastRequest);
 	});
 
     //console.log("rest::getJSON");
@@ -44,8 +43,9 @@ exports.getJSON = function(accessToken, lastRequestTime)
         });
 
         res.on('end', function() {
-            var obj = JSON.parse(output);
-			//here we do what we were planning to do to begin with!
+            var current = JSON.parse(output);
+			var previous = JSON.parse(previousTransactions);
+			//here we do what we were planning to do to begin with: compare to the database lookup of previous results			
         });
     });
 
