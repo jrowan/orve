@@ -24,7 +24,7 @@ exports.getJSON = function(accessToken, lastTimestamp)
 		path: '/v1/' + accessToken + '/payments',
 		method: 'GET',
 		headers: {
-			'Authorization': 'Bearer Mg3K9RsvfUduh8m9BSZPmg',
+			'Authorization': 'Bearer ' + accessToken, //Mg3K9RsvfUduh8m9BSZPmg', //this nneeds to contain the accessToken in general
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		}
@@ -36,33 +36,47 @@ exports.getJSON = function(accessToken, lastTimestamp)
 	});
 
 	//actually perform the request
-	var req = https.request(options, function(res)
-	{
-		var output = '';
-		console.log(options.host + ':' + res.statusCode);
-		res.setEncoding('utf8');
+	var r = request.get('https://connect.squareup.com/v1/'+'/payments', function(err, httpResponse, body) {
+		//console.log("made it into the request");
+		var transactionsDetails = JSON.parse(body); //should be a list of Payment objects, we'll extrad ids from them
+		//console.log(transactionsDetails);
+		var transactionIDs = [];
+		for(int i = 0; i < transactionsDetails.length; ++i){
+			transactionIDs[i] = transactionsDetails[i].id;
+		}
+		//console.log(transactionIDs);
+		
+		//now we do something to the database with these
+		return transactionIDs;
+	});
 
-		res.on('data', function (chunk) {
-			output += chunk;
-		});
+	// var req = https.request(options, function(res)
+	// {
+		// var output = '';
+		// console.log(options.host + ':' + res.statusCode);
+		// res.setEncoding('utf8');
 
-		res.on('end', function() {
-			var current = JSON.parse(output); // parse the json
-			for(var i = 0, len = current.length; i < len ++i)
-				// add new entries to db for this time to the database of transactions
-				// using something like this: current.data[i]
-				// not sure how square keys the data, will need to test
-				// also decrement the counter
-			}
+		// res.on('data', function (chunk) {
+			// output += chunk;
+		// });
+
+		// res.on('end', function() {
+			// var current = JSON.parse(output); // parse the json
+			// for(var i = 0, len = current.length; i < len ++i)
+				// // add new entries to db for this time to the database of transactions
+				// // using something like this: current.data[i]
+				// // not sure how square keys the data, will need to test
+				// // also decrement the counter
+			// }
 			
-		});
-	});
+		// });
+	// });
 
-	req.on('error', function(err) {
-			//res.send('error: ' + err.message);
-	});
+	// req.on('error', function(err) {
+			// //res.send('error: ' + err.message);
+	// });
 
-	req.end();
+	// req.end();
 
 	// change the lastTimestamp to be the timestamp now
 
