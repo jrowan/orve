@@ -32,9 +32,16 @@ function PostChargeRequest(accessToken, userPhone, amount, note) {
   // Set up the request
   var post_req = http.request(post_options, function(res) {
       res.setEncoding('utf8');
+	  var output = '';
       res.on('data', function (chunk) {
-          console.log('Response: ' + chunk);
+        output += chunk;
       });
+	  
+	  res.on('end', function() {
+		var transaction = JSON.parse(output);
+		var transactionID = transaction.data.payment.id;
+		return transactionID;
+	  }
   });
 
   // post the data
