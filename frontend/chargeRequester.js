@@ -1,10 +1,10 @@
-var querystring = require(querystring);
-var http = require(https);
-var fs = require(rs);
+var querystring = require('querystring');
+var http = require('https');
+var fs = require('fs');
 
 // inputs: an accesstoken for an authenticated user (the group getting paid), a phone number for the customer, an amount, and a note
 // requires that note is a valid url string and the userPhone is a 10-digit US phone number with no punctuation
-// return: a valid link to charge the user an amount with the given note
+// return: a transactionID for the venmo transaction just requested
 
 function PostChargeRequest(accessToken, userPhone, amount, note) {
   // Build the string containing information
@@ -32,9 +32,17 @@ function PostChargeRequest(accessToken, userPhone, amount, note) {
   // Set up the request
   var post_req = http.request(post_options, function(res) {
       res.setEncoding('utf8');
+	  var output = '';
       res.on('data', function (chunk) {
-          console.log('Response: ' + chunk);
+        output += chunk; //we store the output
       });
+	  
+	  //so that when the response is ended, we can extract a transactionID
+	  res.on('end', function() {
+		var transaction = JSON.parse(output);
+		var transactionID = transaction.data.payment.id;
+		return transactionID;
+	  });
   });
 
   // post the data
