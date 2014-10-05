@@ -42,7 +42,7 @@ router.get('/newuser', function(req, res) {
 
 /* POST to Add User Service */
 router.post('/addpayment', function(req, res) {
-
+     res.render('helloworld', { title: 'Hello' });
     // Set our internal DB variable
     var db = req.db;
 
