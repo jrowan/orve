@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    h1= title
+    form#formAddUser(name="addpayment",method="post",action="/addpayment")
+        input#inputUserName(type="text", placeholder="name", name="name")
+        input#inputUserEmail(type="tel", placeholder="phone number", name="telephone")
+        button#btnSubmit(type="submit") submit
