@@ -11,6 +11,8 @@ var https = require("https");
 
 exports.getJSON = function(accessToken, lastRequestTime)
 {
+	//developed with the help of looking at Bryan Mac's answer on stackexchange here:
+	//http://stackoverflow.com/questions/9577611/http-get-request-in-node-js-express
 	//these are the settings for get requests to payments in the venmo api
 	var get_options = {
 		host: 'api.venmo.com',
