@@ -1,6 +1,6 @@
-var querystring = require(querystring);
-var http = require(https);
-var fs = require(rs);
+var querystring = require('querystring');
+var http = require('https');
+var fs = require('fs');
 
 // inputs: an accesstoken for an authenticated user (the group getting paid), a phone number for the customer, an amount, and a note
 // requires that note is a valid url string and the userPhone is a 10-digit US phone number with no punctuation
