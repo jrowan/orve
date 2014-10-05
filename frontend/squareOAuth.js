@@ -1,6 +1,6 @@
-// OAuth workflow: redirect user to: https://api.venmo.com/v1/oauth/authorize?client_id=YqNFqWY4q9v5neJ82euPbdFSNtCQ28n4&scope=make_payments%20access_feed%20access_profile%20access_email%20access_phone&response_type=code
-// That will then redirect the user to  https://orve.herokuapp.com/venmo_oauth page, with
-// the URL parameter "code". It then POSTs to Venmo using our client ID and the user's authorization code 
+// OAuth workflow: redirect user to: https://connect.squareup.com/oauth2/authorize?client_id=Mg3K9RsvfUduh8m9BSZPmg
+// That will then redirect the user to  https://orve.herokuapp.com/square_oauth page, with
+// the URL parameter "code". It then POSTs to Square using our client ID and the user's authorization code 
 
 function getURLParameter(name) {
   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
@@ -15,16 +15,16 @@ var AUTHCODE = getURLParameter('code'); // store this in the database entry for 
 function PostCode() {
   // Build the post string from an object
   var post_data = querystring.stringify({
-      'client_id' : 'YqNFqWY4q9v5neJ82euPbdFSNtCQ28n4',
-      'client_secret': 'EXAMPLE_SECRET_ID',
+      'client_id' : 'Mg3K9RsvfUduh8m9BSZPmg',
+      'client_secret': 'BwVCqk1fhjTF-HCjadpc1IvcRO5XAuzBxjU42os077s',
       'code': AUTHCODE
   });
 
   // An object of options to indicate where to post to
   var post_options = {
-      host: 'api.venmo.com',
+      host: 'connect.squareup.com',
       port: '443',
-      path: '/v1/oauth/access_token',
+      path: '/oauth2/token',
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ function PostCode() {
   var post_req = http.request(post_options, function(res) {
       res.setEncoding('utf8');
       res.on('data', function (chunk) {
-          console.log('Response: ' + chunk); // this is the venmo response.
+          console.log('Response: ' + chunk); // this is the square response.
           //save this token and you'll be able to do transactions
       });
   });
