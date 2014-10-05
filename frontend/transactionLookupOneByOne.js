@@ -11,7 +11,7 @@ var https = require("https");
 
  
  
-exports.getJSON = function(accessToken, lastTimestamp, userCollection)
+exports.getJSON = function(accessToken, userCollection)
 {
 	//we get a collection of all the pending transactions
 	var pending = userCollection.find({"status" : "pending"});
@@ -21,29 +21,29 @@ exports.getJSON = function(accessToken, lastTimestamp, userCollection)
 		var transactionID = pending[i].transID; //NB: we may need to change this name depending what database calls it
 		//process that transaction
 
-	//actually perform the request
-	var r = request.get('https://api.venmo.com/'+transactionID, function(err, httpResponse, body) {
-		//console.log("made it into the request");
-		var transactionDetails = JSON.parse(body); //should be a list of Payment objects, we'll extract ids from them
-		//console.log(transactionsDetails);
+		//actually perform the request
+		var r = request.get('https://api.venmo.com/'+transactionID, function(err, httpResponse, body) {
+			//console.log("made it into the request");
+			var transactionDetails = JSON.parse(body); //should be a list of Payment objects, we'll extract ids from them
+			//console.log(transactionsDetails);
+			
+			//we could also in the future when we cover multiple performances include information
+			//about itemization so that we can decrement ticket counter of the right performance
+			
+			//it should look something like this
+			var transactionIDs = [];
+			var transactionStatuses = [];
+			// transactionIDs[i] = transactionsDetails[i].data[7]; //stored in json in weird way 
+			transactionStatus = transactionsDetails.data.status; //only checks one status
+			//if this transaction is settled according to venmo but not our database, update the database
+			if((userCollection.count({ "transID" : transactionID, "status" : "settled"}) == 0) && (transactionStatus == "settled")) { //it has to be settled too
+				userCollection.insert({ "transID" : transactionID}, {"status" : "settled") //also add other info like which showing it was once we have that
+			}
 		
-		//we could also in the future when we cover multiple performances include information
-		//about itemization so that we can decrement ticket counter of the right performance
-		
-		//it should look something like this
-		var transactionIDs = [];
-		var transactionStatuses = [];
-		// transactionIDs[i] = transactionsDetails[i].data[7]; //stored in json in weird way 
-		transactionStatus = transactionsDetails.data.status; //only checks one status
-		//if this transaction is settled according to venmo but not our database, update the database
-		if((userCollection.count({ "transID" : transactionID, "status" : "settled"}) == 0) && (transactionStatus == "settled")) { //it has to be settled too
-			userCollection.insert({ "transID" : transactionID}, {"status" : "settled") //also add other info like which showing it was once we have that
-		}
-	});
-	
-	var form = r.form();
-	form.append('access_token', accessToken);
+		var form = r.form();
+		form.append('access_token', accessToken);
 
+	});
 };
 		
 		//this is the string of arguments we'll pass to the api GET request
