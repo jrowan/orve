@@ -27,6 +27,8 @@ function PostCode() {
       path: '/oauth2/token',
       method: 'POST',
       headers: {
+          'Authorization': 'Bearer Mg3K9RsvfUduh8m9BSZPmg',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Content-Length': post_data.length
       }
