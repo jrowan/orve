@@ -16,7 +16,7 @@ function PostCode() {
   // Build the post string from an object
   var post_data = querystring.stringify({
       'client_id' : 'YqNFqWY4q9v5neJ82euPbdFSNtCQ28n4',
-      'client_secret': 'EXAMPLE_SECRET_ID',
+      'client_secret': 'a9wMnByhdyEYuhYAmC3cmsnaMfLqaw4A',
       'code': AUTHCODE
   });
 
