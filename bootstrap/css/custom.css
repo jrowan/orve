@@ -1,0 +1,32 @@
+.title {
+	font-size: 200px;
+	text-align: center;
+	color: #94B8B8;
+}
+
+.text-area {
+	display: block;
+	margin: 0 auto;
+	width: 500px;
+	height: 200px;
+	border-radius: 3px;
+	margin-bottom: 2rem;
+	resize: none;
+	padding: 1rem;
+}
+
+.sub-title {
+	text-align: center;
+	color: #94B8B8;
+	margin-top: -6rem;
+	margin-bottom: 5rem;
+}
+
+.subtitle-span {
+	color: #999999;
+}
+
+.rate {
+	margin: 0 auto;
+	display: block;
+}
