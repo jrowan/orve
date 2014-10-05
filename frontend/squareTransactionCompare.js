@@ -50,8 +50,8 @@ exports.getJSON = function(accessToken, lastTimestamp, userCollection)
 		for(int i = 0; i < transactionsDetails.length; ++i){
 			transactionIDs[i] = transactionsDetails[i].id;
 			//if this transaction isn't in the database yet, enter it
-			if(userCollection.count({ "id" : transactionIDs[i]}) == 0) {
-				userCollection.insert({ "id" : transactionIDs[i]}) //also add other info like which seciton it was once we have that
+			if(userCollection.count({ "transID" : transactionIDs[i]}) == 0) {
+				userCollection.insert({ "transID" : transactionIDs[i]}) //also add other info like which seciton it was once we have that
 			}
 		}
 		//console.log(transactionIDs);
