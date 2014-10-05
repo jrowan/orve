@@ -1,0 +1,142 @@
+/* HTML5 CSS Reset
+-------------------------------------------------------------------------------*/
+
+@import url(https://reset5.googlecode.com/hg/reset.min.css);
+
+ul
+{
+	list-style-type: none;
+}
+
+/* Fonts
+-------------------------------------------------------------------------------*/
+
+@import url(http://fonts.googleapis.com/css?family=Lora);
+
+/* Print style
+-------------------------------------------------------------------------------*/
+
+@media print
+{
+
+}
+
+/* Media queries
+-------------------------------------------------------------------------------*/
+
+@media screen and (max-device-width: 480px)
+{
+
+}
+
+@media all and (orientation: portrait)
+{
+
+}
+
+@media all and (orientation: landscape)
+{
+
+}
+
+@media all and (max-width: 593px) {
+
+}
+
+/* Main CSS
+-------------------------------------------------------------------------------*/
+
+#home
+{
+	background-color: #e0e0e0;
+}
+
+#register-form
+{
+	font-size: 24pt;
+	text-align: center;
+	width: 300px;
+	height: 240px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #aaa8a8;
+	padding-top: 3px;
+	border-radius: 5px;
+	font-family: 'Lora', serif;
+	color: #465863;
+}
+
+#reg-form-wrap
+{
+	width: 260px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.reg-text
+{
+	width: 250px;
+	height: 30px;
+	margin-top: 10px;
+	padding: 5px;
+	text-align: center;
+}
+
+input[type="text"]
+{
+	font-family: 'Lora', serif;
+	font-size: 16pt;
+	color: #465863;
+}
+input[type="email"]
+{
+	font-family: 'Lora', serif;
+	font-size: 16pt;
+	color: #465863;
+}
+input[type="password"]
+{
+	font-family: 'Lora', serif;
+	font-size: 16pt;
+	color: #465863;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #35434c;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	color: #35434c;
+	opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #35434c;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color: #35434c;
+}
+
+#password
+{
+	margin-bottom: 10px;
+}
+
+#reg-submit
+{
+	display:block;
+	height:28px;
+	width:82px;
+	background:url(../images/submit.gif) no-repeat;
+	border:none;
+	overflow:hidden;
+	cursor:pointer;
+	margin-top: 10px;
+	text-indent:-9999em;
+	line-height: 0px;
+}
+
+#submitButtons
+{
+	width: 82px;
+	margin-left: auto;
+	margin-right: auto;
+}
