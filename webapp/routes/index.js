@@ -1,6 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+//
+var querystring = require('querystring');
+// var http = require('https');
+// http.post = require('http-post');
+var fs = require('fs');
+//
+var request = require('request');
+
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
@@ -33,22 +41,33 @@ router.get('/newuser', function(req, res) {
 });
 
 /* POST to Add User Service */
-router.post('/adduser', function(req, res) {
+router.post('/addpayment', function(req, res) {
 
     // Set our internal DB variable
     var db = req.db;
 
     // Get our form values. These rely on the "name" attributes
-    var userName = req.body.username;
-    var userEmail = req.body.useremail;
+    var userName = req.body.name;
+    var userPhone = req.body.telephone;
+    var userAmt = req.body.amount;
+
+    var newAmt = "-" + userAmt;
 
     // Set our collection
     var collection = db.get('usercollection');
 
+    var message = "Message3";
+
+    var TXN = PostChargeRequest("YqNFqWY4q9v5neJ82euPbdFSNtCQ28n4", userPhone, newAmt, message);
+
     // Submit to the DB
     collection.insert({
-        "username" : userName,
-        "email" : userEmail
+        "name" : userName,
+        "phone" : userPhone,
+        "amount" : userAmt,
+        "transID" : TXN,
+        "status" : "pending",
+        "showDate" : "2014-09-30T04:31:22-05:00"
     }, function (err, doc) {
         if (err) {
             // If it failed, return error
@@ -61,6 +80,31 @@ router.post('/adduser', function(req, res) {
             res.redirect("userlist");
         }
     });
+
 });
+
+// inputs: an accesstoken for an authenticated user (the group getting paid), a phone number for the customer, an amount, and a note
+// requires that note is a valid url string and the userPhone is a 10-digit US phone number with no punctuation
+// return: a valid link to charge the user an amount with the given note
+
+function PostChargeRequest(accessToken, userPhone, amount, note) {
+  var post_options = {
+  	host: 'api.venmo.com',
+  	port: '443',
+  	path: '/v1/payments'
+  }
+
+  var r = request.post('https://api.venmo.com/v1/payments', function(err, httpResponse, body) {
+      var transaction = JSON.parse(body);
+      var transactionID = transaction.data.payment.id;
+      return transactionID;
+  });
+
+  var form = r.form();
+  form.append('access_token', accessToken);
+  form.append('phone', userPhone);
+  form.append('amount', amount);
+  form.append('note', note);
+}
 
 module.exports = router;
