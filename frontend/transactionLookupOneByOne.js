@@ -14,16 +14,17 @@ var https = require("https");
 exports.getJSON = function(accessToken, lastTimestamp, userCollection)
 {
 	//we get a collection of all the pending transactions
-
+	var pending = userCollection.find({"status" : "pending"});
+	
 	//iterate through the transactions
 	for (var i = 0, len = pending.length; i < len ++i){
-		var transactionID = pending[i].txnID; //NB: we may need to change this name depending what database calls it
+		var transactionID = pending[i].transID; //NB: we may need to change this name depending what database calls it
 		//process that transaction
 
 	//actually perform the request
 	var r = request.get('https://api.venmo.com/'+transactionID, function(err, httpResponse, body) {
 		//console.log("made it into the request");
-		var transactionsDetails = JSON.parse(body); //should be a list of Payment objects, we'll extract ids from them
+		var transactionDetails = JSON.parse(body); //should be a list of Payment objects, we'll extract ids from them
 		//console.log(transactionsDetails);
 		
 		//we could also in the future when we cover multiple performances include information
@@ -32,15 +33,16 @@ exports.getJSON = function(accessToken, lastTimestamp, userCollection)
 		//it should look something like this
 		var transactionIDs = [];
 		var transactionStatuses = [];
-		for(int i = 0; i < transactionsDetails.length; ++i){
-			transactionIDs[i] = transactionsDetails[i].data[7]; //stored in json in weird way 
-			transactionStatuses[i] = transactionsDetails[i].data[0].status; //only checks one status
-			//if this transaction isn't in the database yet, enter it
-			if((userCollection.count({ "transID" : transactionIDs[i]}) == 0) && (transactionStatuses[i] == "settled")) { //it has to be settled too
-				userCollection.insert({ "transID" : transactionIDs[i]}) //also add other info like which showing it was once we have that
-			}
+		// transactionIDs[i] = transactionsDetails[i].data[7]; //stored in json in weird way 
+		transactionStatus = transactionsDetails.data.status; //only checks one status
+		//if this transaction is settled according to venmo but not our database, update the database
+		if((userCollection.count({ "transID" : transactionID, "status" : "settled"}) == 0) && (transactionStatus == "settled")) { //it has to be settled too
+			userCollection.insert({ "transID" : transactionID}, {"status" : "settled") //also add other info like which showing it was once we have that
 		}
 	});
+	
+	var form = r.form();
+	form.append('access_token', accessToken);
 
 };
 		
